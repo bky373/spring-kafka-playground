@@ -1,7 +1,12 @@
+server:
+  port: 8088
+
 spring:
   application:
     name: spring-kafka-playground
 
   kafka:
+    bootstrap-servers: localhost:29092
     consumer:
       auto-offset-reset: earliest
+
