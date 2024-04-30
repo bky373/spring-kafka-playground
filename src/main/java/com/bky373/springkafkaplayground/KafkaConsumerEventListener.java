@@ -5,8 +5,6 @@ import org.springframework.kafka.event.ConsumerStartedEvent;
 import org.springframework.kafka.event.ConsumerStartingEvent;
 import org.springframework.kafka.event.ConsumerStoppedEvent;
 import org.springframework.kafka.event.ConsumerStoppingEvent;
-import org.springframework.kafka.event.ListenerContainerIdleEvent;
-import org.springframework.kafka.event.ListenerContainerNoLongerIdleEvent;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,13 +30,13 @@ public class KafkaConsumerEventListener {
         System.out.println("####### ConsumerStoppedEvent = " + event);
     }
 
-    @EventListener(ListenerContainerIdleEvent.class)
-    public void onEvent(ListenerContainerIdleEvent event) {
-        System.out.println("####### ListenerContainerIdleEvent = " + event);
-    }
-
-    @EventListener(ListenerContainerNoLongerIdleEvent.class)
-    public void onEvent(ListenerContainerNoLongerIdleEvent event) {
-        System.out.println("####### ListenerContainerNoLongerIdleEvent = " + event);
-    }
+//    @EventListener(ListenerContainerIdleEvent.class)
+//    public void onEvent(ListenerContainerIdleEvent event) {
+//        System.out.println("####### ListenerContainerIdleEvent = " + event);
+//    }
+//
+//    @EventListener(ListenerContainerNoLongerIdleEvent.class)
+//    public void onEvent(ListenerContainerNoLongerIdleEvent event) {
+//        System.out.println("####### ListenerContainerNoLongerIdleEvent = " + event);
+//    }
 }
