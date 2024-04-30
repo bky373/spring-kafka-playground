@@ -8,6 +8,6 @@ public class KafkaConsumer {
 
     @KafkaListener(id = "local1", topics = "topic1")
     public void consume(String in) {
-        System.out.println("in = " + in);
+        System.out.println("######## in = " + in);
     }
 }

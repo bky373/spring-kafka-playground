@@ -25,7 +25,9 @@ public class KafkaConfig {
     KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
-        factory.getContainerProperties().setPollTimeout(3000);
+        var props = factory.getContainerProperties();
+        props.setPollTimeout(3000);
+        props.setIdleEventInterval(3000L); // for ListenerContainerIdleEvent
         return factory;
     }
 
