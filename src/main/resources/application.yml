@@ -8,5 +8,5 @@ spring:
   kafka:
     bootstrap-servers: localhost:29092
     consumer:
-      auto-offset-reset: earliest
+      auto-offset-reset: latest
 
