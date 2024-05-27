@@ -1,7 +1,9 @@
 package com.bky373.springkafkaplayground;
 
+import com.bky373.springkafkaplayground.seek.SeekConstants;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +22,11 @@ public class KafkaConfig {
 
     @Value("${spring.kafka.bootstrap-servers:localhost:29092}")
     private String broker;
+
+    @Bean
+    public NewTopic topic() {
+        return new NewTopic(SeekConstants.TOPIC, 3, (short) 2);
+    }
 
     @Bean
     KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
