@@ -2,6 +2,9 @@ server:
   port: 8088
 
 spring:
+  main:
+    banner-mode: off
+
   application:
     name: spring-kafka-playground
 
@@ -10,3 +13,8 @@ spring:
     consumer:
       auto-offset-reset: latest
 
+#logging:
+#  level:
+##    org.apache.kafka: debug
+#    org.apache.kafka.clients: WARN
+#    org.apache.kafka.common.utils.AppInfoParser: WARN

@@ -48,4 +48,14 @@ public class KafkaConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         return props;
     }
+
+    @Bean
+    ConcurrentKafkaListenerContainerFactory<String, String> stringConsumerContainerFactory() {
+        var factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
+        factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(consumerConfigs(),
+                                                                     new StringDeserializer(),
+                                                                     new StringDeserializer()));
+        factory.setBatchListener(true);
+        return factory;
+    }
 }
