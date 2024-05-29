@@ -11,10 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.KafkaListenerContainerFactory;
-import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 
 @EnableKafka
 @Configuration
@@ -28,19 +25,29 @@ public class KafkaConfig {
         return new NewTopic(SeekConstants.TOPIC, 3, (short) 2);
     }
 
-    @Bean
-    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        var props = factory.getContainerProperties();
-        props.setPollTimeout(3000);
-        props.setIdleEventInterval(3000L); // for ListenerContainerIdleEvent
-        return factory;
-    }
+//    @Bean
+//    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
+//        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+//        factory.setConsumerFactory(consumerFactory());
+//        var props = factory.getContainerProperties();
+//        props.setPollTimeout(3000);
+//        props.setIdleEventInterval(3000L); // for ListenerContainerIdleEvent
+//        return factory;
+//    }
+
+//    @Bean
+//    public ConsumerFactory<String, String> consumerFactory() {
+//        return new DefaultKafkaConsumerFactory<>(consumerConfigs());
+//    }
 
     @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerConfigs());
+    ConcurrentKafkaListenerContainerFactory<String, String> stringConsumerContainerFactory() {
+        var factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
+        factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(consumerConfigs(),
+                                                                     new StringDeserializer(),
+                                                                     new StringDeserializer()));
+        factory.setBatchListener(true);
+        return factory;
     }
 
     @Bean
@@ -54,15 +61,5 @@ public class KafkaConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         return props;
-    }
-
-    @Bean
-    ConcurrentKafkaListenerContainerFactory<String, String> stringConsumerContainerFactory() {
-        var factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
-        factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(consumerConfigs(),
-                                                                     new StringDeserializer(),
-                                                                     new StringDeserializer()));
-        factory.setBatchListener(true);
-        return factory;
     }
 }
