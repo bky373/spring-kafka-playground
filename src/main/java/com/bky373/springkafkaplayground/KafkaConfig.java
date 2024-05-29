@@ -21,8 +21,13 @@ public class KafkaConfig {
     private String broker;
 
     @Bean
-    public NewTopic topic() {
-        return new NewTopic(SeekConstants.TOPIC, 3, (short) 2);
+    public NewTopic topic1() {
+        return new NewTopic(SeekConstants.TOPIC_1, 3, (short) 2);
+    }
+
+    @Bean
+    public NewTopic topic2() {
+        return new NewTopic(SeekConstants.TOPIC_2, 3, (short) 2);
     }
 
 //    @Bean

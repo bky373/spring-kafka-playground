@@ -1,7 +1,10 @@
 package com.bky373.springkafkaplayground.seek;
 
+import static com.bky373.springkafkaplayground.seek.SeekConstants.TOPIC_1;
+import static com.bky373.springkafkaplayground.seek.SeekConstants.TOPIC_2;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -24,39 +27,54 @@ public class SeekController {
 
     @GetMapping("/seek")
     void seek() throws InterruptedException, ExecutionException, TimeoutException {
-        send("init", 0);
-        send("init", 1);
-        sendAndGet("init", 2);
+        send(TOPIC_1, "init", 0);
+        send(TOPIC_1, "init", 1);
+        send(TOPIC_1, "init", 2);
+        send(TOPIC_2, "init", 0);
+        send(TOPIC_2, "init", 1);
+        sendAndGet(TOPIC_2, "init", 2);
 
-        send("before seek-time", 0);
-        send("before seek-time", 1);
-        sendAndGet("before seek-time", 2);
-
+        send(TOPIC_1, "before seek-time", 0);
+        send(TOPIC_1, "before seek-time", 1);
+        send(TOPIC_1, "before seek-time", 2);
+        send(TOPIC_2, "before seek-time", 0);
+        send(TOPIC_2, "before seek-time", 1);
+        send(TOPIC_2, "before seek-time", 2);
         long now = System.currentTimeMillis();
 
-        send("after seek-time", 0);
-        send("after seek-time", 1);
-        sendAndGet("after seek-time", 2);
+        send(TOPIC_1, "after seek-time", 0);
+        send(TOPIC_1, "after seek-time", 1);
+        send(TOPIC_1, "after seek-time", 2);
+        send(TOPIC_2, "after seek-time", 0);
+        send(TOPIC_2, "after seek-time", 1);
+        sendAndGet(TOPIC_2, "after seek-time", 2);
 
+        consumer.addSeekTopics(Set.of(TOPIC_1));
         consumer.seekToTimestamp(now);
 
-        send("after seeking", 0);
-        send("after seeking", 1);
-        sendAndGet("after seeking", 2);
+        send(TOPIC_1, "after seeking", 0);
+        send(TOPIC_1, "after seeking", 1);
+        send(TOPIC_1, "after seeking", 2);
+        send(TOPIC_2, "after seeking", 0);
+        send(TOPIC_2, "after seeking", 1);
+        sendAndGet(TOPIC_2, "after seeking", 2);
 
-        send("end", 0);
-        send("end", 1);
-        sendAndGet("end", 2);
+        send(TOPIC_1, "end", 0);
+        send(TOPIC_1, "end", 1);
+        send(TOPIC_1, "end", 2);
+        send(TOPIC_2, "end", 0);
+        send(TOPIC_2, "end", 1);
+        sendAndGet(TOPIC_2, "end", 2);
 
         Thread.sleep(5000);
     }
 
-    private void send(String value, int partition) {
-        kafkaTemplate.send(SeekConstants.TOPIC, partition, String.valueOf(partition), value + ":" + partition);
+    private void send(String topic, String value, int partition) {
+        kafkaTemplate.send(topic, partition, null, value + ":" + partition);
     }
 
-    private void sendAndGet(String value, int partition) throws InterruptedException, ExecutionException, TimeoutException {
-        kafkaTemplate.send(SeekConstants.TOPIC, partition, String.valueOf(partition), value + ":" + partition)
+    private void sendAndGet(String topic, String value, int partition) throws InterruptedException, ExecutionException, TimeoutException {
+        kafkaTemplate.send(topic, partition, null, value + ":" + partition)
                      .get(10, SECONDS);
     }
 }
