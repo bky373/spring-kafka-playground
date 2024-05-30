@@ -1,1 +1,10 @@
-GET localhost:8088/seek
+#####
+POST localhost:8089/actuator/seek
+Content-Type: application/json
+
+{
+  "topics": [
+    "SEEK-1"
+  ],
+  "seekAt": "2024-05-30T18:39:00"
+}

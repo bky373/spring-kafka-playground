@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8089
 
 spring:
   main:
@@ -13,10 +13,17 @@ spring:
     consumer:
       auto-offset-reset: latest
 
-logging:
-  level:
+#logging:
+#  level:
 #    org.apache.kafka: debug
-    org.apache.kafka.clients.producer: WARN
-    org.apache.kafka.clients.admin.AdminClientConfig: WARN
-    org.apache.kafka.clients.consumer.ConsumerConfig: WARN
-    org.apache.kafka.common.utils.AppInfoParser: WARN
+#    org.apache.kafka.clients.producer: WARN
+#    org.apache.kafka.clients.admin.AdminClientConfig: WARN
+#    org.apache.kafka.clients.consumer.ConsumerConfig: WARN
+#    org.apache.kafka.common.utils.AppInfoParser: WARN
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
