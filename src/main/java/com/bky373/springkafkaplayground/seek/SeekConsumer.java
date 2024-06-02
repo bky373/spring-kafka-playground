@@ -16,34 +16,40 @@ public class SeekConsumer extends AbstractConsumerSeekAware {
 
     private static final Logger log = LoggerFactory.getLogger(SeekConsumer.class);
 
+    @Override
+    public void registerSeekCallback(ConsumerSeekCallback callback) {
+        super.registerSeekCallback(callback);
+    }
+
     @KafkaListener(
-            groupId = SeekConstants.GROUP_ID,
-            topics = {SeekConstants.TOPIC_1, SeekConstants.TOPIC_2},
+            groupId = SeekConstants.GROUP_ID_1,
+            topics = {SeekConstants.TOPIC_1},
             concurrency = "3",
             containerFactory = "stringConsumerContainerFactory"
     )
-    public void listen(@Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+    public void listen(@Header(KafkaHeaders.RECEIVED_TOPIC) Set<String> topics,
                        @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
                        @Header(KafkaHeaders.OFFSET) long offset,
+                       @Header(KafkaHeaders.GROUP_ID) String groupId,
                        List<String> events) {
-        System.out.printf("""
-                                  [in] [%s] topic=%s, partition=%s, offset=%s, value=%s%n""",
-                          ThreadSupport.getName(), topic, partition, offset, events);
+        System.out.printf(String.format("[in] [%s] groupId=%s, topics=%s, partition=%s, offset=%s, value=%s%n)",
+                                        ThreadSupport.getName(), groupId, topics, partition, offset, events));
     }
 
-//    @KafkaListener(
-//            groupId = SeekConstants.GROUP_ID,
-//            topics = TOPIC_2,
-//            concurrency = "3",
-//            containerFactory = "stringConsumerContainerFactory"
-//    )
-//    public void listen2(@Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
-//                        @Header(KafkaHeaders.OFFSET) long offset,
-//                        List<String> events) {
-//        System.out.printf("""
-//                                  [in-2] [%s] partition=%s, offset=%s, value=%s%n""",
-//                          ThreadSupport.getName(), partition, offset, events);
-//    }
+    @KafkaListener(
+            groupId = SeekConstants.GROUP_ID_2,
+            topics = SeekConstants.TOPIC_1,
+            concurrency = "3",
+            containerFactory = "stringConsumerContainerFactory"
+    )
+    public void listen2(@Header(KafkaHeaders.RECEIVED_TOPIC) Set<String> topics,
+                        @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
+                        @Header(KafkaHeaders.OFFSET) long offset,
+                        @Header(KafkaHeaders.GROUP_ID) String groupId,
+                        List<String> events) {
+        System.out.printf(String.format("[in] [%s] groupId=%s, topics=%s, partition=%s, offset=%s, value=%s%n)",
+                                        ThreadSupport.getName(), groupId, topics, partition, offset, events));
+    }
 
     /**
      * 모든 토픽이 아닌, 특정 토픽의 오프셋만 조정합니다.
@@ -55,10 +61,12 @@ public class SeekConsumer extends AbstractConsumerSeekAware {
             return;
         }
         super.getCallbacksAndTopics()
-             .forEach((cb, topicPartitions) -> topicPartitions.forEach(tp -> {
-                 if (seekTopics.contains(tp.topic())) {
-                     cb.seekToTimestamp(tp.topic(), tp.partition(), time);
-                 }
-             }));
+             .forEach((cb, topicPartitions) -> {
+                 topicPartitions.forEach(tp -> {
+                     if (seekTopics.contains(tp.topic())) {
+                         cb.seekToTimestamp(tp.topic(), tp.partition(), time);
+                     }
+                 });
+             });
     }
 }

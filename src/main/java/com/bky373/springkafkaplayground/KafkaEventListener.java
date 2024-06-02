@@ -2,6 +2,9 @@ package com.bky373.springkafkaplayground;
 
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.kafka.event.ConsumerPartitionPausedEvent;
+import org.springframework.kafka.event.ConsumerPartitionResumedEvent;
+import org.springframework.kafka.event.ConsumerPausedEvent;
 import org.springframework.kafka.event.ConsumerStartingEvent;
 import org.springframework.kafka.event.ConsumerStoppedEvent;
 import org.springframework.kafka.event.ConsumerStoppingEvent;
@@ -38,10 +41,25 @@ public class KafkaEventListener {
         printEvent(event);
     }
 
+    @EventListener(ConsumerPausedEvent.class)
+    public void onEvent(ConsumerPausedEvent event) {
+        printEvent(event);
+    }
+
+    @EventListener(ConsumerPartitionPausedEvent.class)
+    public void onEvent(ConsumerPartitionPausedEvent event) {
+        printEvent(event);
+    }
+
 //    @EventListener(ConsumerResumedEvent.class)
 //    public void onEvent(ConsumerResumedEvent event) {
 //        printEvent(event);
 //    }
+
+    @EventListener(ConsumerPartitionResumedEvent.class)
+    public void onEvent(ConsumerPartitionResumedEvent event) {
+        printEvent(event);
+    }
 
     @EventListener(ListenerContainerIdleEvent.class)
     public void onEvent(ListenerContainerIdleEvent event) {
