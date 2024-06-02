@@ -77,7 +77,7 @@ public class SeekController {
     }
 
     private void send(String topic, String value, int partition) {
-        kafkaTemplate.send(topic, partition, null, value + ":" + partition);
+        kafkaTemplate.send(topic, partition, null, value + ":" + topic + ":" + partition);
     }
 
     private void sendAndGet(String topic, String value, int partition) {
