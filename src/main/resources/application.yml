@@ -13,9 +13,11 @@ spring:
     consumer:
       auto-offset-reset: latest
 
-#logging:
-#  level:
-#    org.apache.kafka: debug
+logging:
+  level:
+#    root: trace
+    org.apache.kafka: trace
+    org.apache.kafka.common.metrics: WARN
 #    org.apache.kafka.clients.producer: WARN
 #    org.apache.kafka.clients.admin.AdminClientConfig: WARN
 #    org.apache.kafka.clients.consumer.ConsumerConfig: WARN

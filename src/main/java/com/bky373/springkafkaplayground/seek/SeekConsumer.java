@@ -1,8 +1,6 @@
 package com.bky373.springkafkaplayground.seek;
 
 import com.bky373.springkafkaplayground.ThreadSupport;
-import java.util.List;
-import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -11,15 +9,19 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Set;
+
 @Component
 public class SeekConsumer extends AbstractConsumerSeekAware {
 
     private static final Logger log = LoggerFactory.getLogger(SeekConsumer.class);
 
     @KafkaListener(
+            id = SeekConstants.GROUP_ID + "-1",
             groupId = SeekConstants.GROUP_ID,
-            topics = {SeekConstants.TOPIC_1, SeekConstants.TOPIC_2},
-            concurrency = "3",
+            topics = {SeekConstants.TOPIC_1},
+//            concurrency = "3",
             containerFactory = "stringConsumerContainerFactory"
     )
     public void listen(@Header(KafkaHeaders.RECEIVED_TOPIC) String topic,

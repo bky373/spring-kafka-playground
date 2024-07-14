@@ -1,8 +1,6 @@
 package com.bky373.springkafkaplayground;
 
 import com.bky373.springkafkaplayground.seek.SeekConstants;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -13,6 +11,9 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @EnableKafka
 @Configuration
 public class KafkaConfig {
@@ -22,7 +23,7 @@ public class KafkaConfig {
 
     @Bean
     public NewTopic topic1() {
-        return new NewTopic(SeekConstants.TOPIC_1, 3, (short) 2);
+        return new NewTopic(SeekConstants.TOPIC_1, 1, (short) 1);
     }
 
     @Bean
