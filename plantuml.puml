@@ -1,0 +1,140 @@
+@startuml
+class KafkaMessageListenerContainer$ListenerConsumer {
+ {method} pollConsumer()
+}
+
+class DefaultKafkaConsumer$ExtendedKafkaConsumer {
+ {method} poll()
+}
+
+class KafkaConsumer {
+ {field} delegate
+ {method} poll()
+}
+
+class LegacyKafkaConsumer {
+ {method} poll()
+ {method}
+ {method} updateAssignmentMetadataIfNeeded()
+}
+
+class ConsumerCoordinator {
+ {method} poll()
+ {method}
+ {method} coordinatorUnknownAndUnreadySync()
+ {method}
+ {method} onJoinPrepare()
+ {method}
+ {method} onLeaderElected()
+ {method}
+ {method} onJoinComplete()
+}
+'
+abstract class AbstractCoordinator {
+ {method} ensureCoordinatorReady()
+ {method}
+ {method} lookupCoordinator()
+ {method}
+ {method} sendFindCoordinatorRequest()
+ {method}
+ {method} ensureActiveGroup()
+ {method}
+ {method} onJoinPrepare()
+ {method}
+ {method} joinGroupIfNeeded()
+ {method}
+ {method} onLeaderElected()
+ {method}
+ {method} onJoinComplete()
+}
+
+class ConsumerNetworkClient {
+ {method} poll()
+}
+
+class NetworkClient {
+ {method} poll()
+}
+
+class AbstractCoordinator$FindCoordinatorResponseHandler {
+ {method} onSuccess()
+}
+
+class AbstractCoordinator$JoinGroupResponseHandler {
+ {method} handle()
+}
+
+class AbstractCoordinator$SyncGroupResponseHandler {
+ {method} handle()
+}
+
+'Hide options
+hide empty fields
+
+'Extends and Implements
+KafkaConsumer <|-- DefaultKafkaConsumer$ExtendedKafkaConsumer
+AbstractCoordinator <|-- ConsumerCoordinator
+
+'Call Directions
+KafkaMessageListenerContainer$ListenerConsumer::pollConsumer --> DefaultKafkaConsumer$ExtendedKafkaConsumer::poll
+DefaultKafkaConsumer$ExtendedKafkaConsumer::poll --> KafkaConsumer::poll
+KafkaConsumer::poll -> KafkaConsumer::delegate
+note on link: self invocation
+KafkaConsumer::delegate -> LegacyKafkaConsumer::poll
+LegacyKafkaConsumer::poll -> LegacyKafkaConsumer::updateAssignmentMetadataIfNeeded
+note on link: self invocation
+LegacyKafkaConsumer::updateAssignmentMetadataIfNeeded -> ConsumerCoordinator::poll
+ConsumerCoordinator::poll -> ConsumerCoordinator::coordinatorUnknownAndUnreadySync
+note right on link: self invocation
+ConsumerCoordinator::coordinatorUnknownAndUnreadySync -> AbstractCoordinator::ensureCoordinatorReady
+AbstractCoordinator::ensureCoordinatorReady -> AbstractCoordinator::lookupCoordinator
+note on link: self invocation
+AbstractCoordinator::lookupCoordinator -> AbstractCoordinator::sendFindCoordinatorRequest
+AbstractCoordinator::sendFindCoordinatorRequest -> ConsumerNetworkClient::poll
+ConsumerNetworkClient::poll -> NetworkClient::poll
+ConsumerCoordinator::poll -> AbstractCoordinator::ensureActiveGroup
+AbstractCoordinator::ensureActiveGroup -> AbstractCoordinator::joinGroupIfNeeded
+AbstractCoordinator::joinGroupIfNeeded -> ConsumerCoordinator::onJoinPrepare
+AbstractCoordinator$JoinGroupResponseHandler::handle -> AbstractCoordinator::onLeaderElected
+AbstractCoordinator::onLeaderElected -> ConsumerCoordinator::onLeaderElected
+
+'Setting Layout
+together {
+  class KafkaMessageListenerContainer$ListenerConsumer
+}
+together {
+  class KafkaConsumer
+}
+together {
+  class DefaultKafkaConsumer$ExtendedKafkaConsumer
+  class LegacyKafkaConsumer
+}
+together {
+  abstract class AbstractCoordinator
+}
+together {
+  class ConsumerCoordinator
+}
+together {
+  class ConsumerNetworkClient
+}
+together {
+  class NetworkClient
+}
+together {
+  class AbstractCoordinator$FindCoordinatorResponseHandler
+  class AbstractCoordinator$JoinGroupResponseHandler
+  class AbstractCoordinator$SyncGroupResponseHandler
+}
+KafkaMessageListenerContainer$ListenerConsumer -[hidden]> KafkaConsumer
+KafkaConsumer -[hidden]--> DefaultKafkaConsumer$ExtendedKafkaConsumer
+DefaultKafkaConsumer$ExtendedKafkaConsumer -[hidden] LegacyKafkaConsumer
+LegacyKafkaConsumer -[hidden]--> AbstractCoordinator
+AbstractCoordinator -[hidden]--> ConsumerCoordinator
+ConsumerCoordinator -[hidden]--> ConsumerNetworkClient
+ConsumerNetworkClient -[hidden]--> NetworkClient
+NetworkClient -[hidden]--> AbstractCoordinator$FindCoordinatorResponseHandler
+AbstractCoordinator$FindCoordinatorResponseHandler -[hidden] AbstractCoordinator$JoinGroupResponseHandler
+AbstractCoordinator$JoinGroupResponseHandler -[hidden] AbstractCoordinator$SyncGroupResponseHandler
+
+@enduml
