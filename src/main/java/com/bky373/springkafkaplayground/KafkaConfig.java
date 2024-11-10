@@ -1,6 +1,5 @@
 package com.bky373.springkafkaplayground;
 
-import com.bky373.springkafkaplayground.seek.SeekConstants;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -18,17 +17,21 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
 
+    public static final String GROUP_ID = "GRP";
+    public static final String TOPIC_1 = "TOPIC_1";
+    public static final String TOPIC_2 = "TOPIC_2";
+
     @Value("${spring.kafka.bootstrap-servers:localhost:29092}")
     private String broker;
 
     @Bean
     public NewTopic topic1() {
-        return new NewTopic(SeekConstants.TOPIC_1, 1, (short) 1);
+        return new NewTopic(TOPIC_1, 1, (short) 1);
     }
 
-    @Bean
+//    @Bean
     public NewTopic topic2() {
-        return new NewTopic(SeekConstants.TOPIC_2, 3, (short) 2);
+        return new NewTopic(TOPIC_2, 3, (short) 2);
     }
 
 //    @Bean
@@ -52,7 +55,7 @@ public class KafkaConfig {
         factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(consumerConfigs(),
                                                                      new StringDeserializer(),
                                                                      new StringDeserializer()));
-        factory.setBatchListener(true);
+//        factory.setBatchListener(true);
         return factory;
     }
 
@@ -60,10 +63,8 @@ public class KafkaConfig {
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, broker);
-        props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "10");
-        props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "60000");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         return props;

@@ -1,5 +1,10 @@
 package com.bky373.springkafkaplayground.seek;
 
+import static com.bky373.springkafkaplayground.KafkaConfig.TOPIC_1;
+import static java.util.concurrent.TimeUnit.SECONDS;
+
+import java.time.LocalDateTime;
+import java.util.Set;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
@@ -10,12 +15,6 @@ import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
-import java.util.Set;
-
-import static com.bky373.springkafkaplayground.seek.SeekConstants.TOPIC_1;
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 @RestController
 @RestControllerEndpoint(id = "seek")

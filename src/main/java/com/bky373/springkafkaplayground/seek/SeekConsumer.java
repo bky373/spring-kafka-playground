@@ -17,13 +17,13 @@ public class SeekConsumer extends AbstractConsumerSeekAware {
 
     private static final Logger log = LoggerFactory.getLogger(SeekConsumer.class);
 
-    @KafkaListener(
-            id = SeekConstants.GROUP_ID + "-1",
-            groupId = SeekConstants.GROUP_ID,
-            topics = {SeekConstants.TOPIC_1},
-//            concurrency = "3",
-            containerFactory = "stringConsumerContainerFactory"
-    )
+//    @KafkaListener(
+//            id = SeekConstants.GROUP_ID + "-1",
+//            groupId = SeekConstants.GROUP_ID,
+//            topics = {SeekConstants.TOPIC_1},
+////            concurrency = "3",
+//            containerFactory = "stringConsumerContainerFactory"
+//    )
     public void listen(@Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
                        @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
                        @Header(KafkaHeaders.OFFSET) long offset,
