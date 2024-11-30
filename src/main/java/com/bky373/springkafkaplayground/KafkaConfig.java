@@ -17,21 +17,15 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
 
-    public static final String GROUP_ID = "GRP";
-    public static final String TOPIC_1 = "TOPIC_1";
-    public static final String TOPIC_2 = "TOPIC_2";
+    public static final String GROUP_ID = "my-group-id";
+    public static final String MY_TOPIC = "my-topic";
 
     @Value("${spring.kafka.bootstrap-servers:localhost:29092}")
     private String broker;
 
     @Bean
     public NewTopic topic1() {
-        return new NewTopic(TOPIC_1, 1, (short) 1);
-    }
-
-//    @Bean
-    public NewTopic topic2() {
-        return new NewTopic(TOPIC_2, 3, (short) 2);
+        return new NewTopic(MY_TOPIC, 1, (short) 1);
     }
 
 //    @Bean
