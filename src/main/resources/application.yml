@@ -16,7 +16,8 @@ spring:
 logging:
   level:
 #    root: trace
-    org.apache.kafka: debug
+#    org.apache.kafka: debug
+    org.apache.kafka: info
 #    org.apache.kafka.common.metrics: WARN
 #    org.apache.kafka.clients.producer: WARN
 #    org.apache.kafka.clients.admin.AdminClientConfig: WARN
