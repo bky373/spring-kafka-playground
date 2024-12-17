@@ -16,8 +16,6 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaAdmin.NewTopics;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
-import org.springframework.kafka.listener.ContainerProperties;
-import org.springframework.kafka.listener.ContainerProperties.AckMode;
 
 @Configuration
 public class KafkaRetryConfig {
@@ -28,24 +26,14 @@ public class KafkaRetryConfig {
 
     public static final String BLOCKING_RETRY_TOPIC = "blocking-retry";
     public static final String NON_BLOCKING_RETRY_TOPIC = "non-blocking-retry";
-    public static final String DEFAULT_KAFKA_LISTENER_RETRY = "default-kafka-listener-retry";
+    public static final String KAFKA_LISTENER_DEFAULT_RETRY = "kafka-listener-default-retry";
     public static final String RETRYABLE_ANNOTATION_DEFAULT_TOPIC = "retryable-annotation-default";
-
-    @Bean
-    public NewTopic blockingRetryTopic() {
-        return new NewTopic(BLOCKING_RETRY_TOPIC, 1, (short) 1);
-    }
 
     @Bean
     public NewTopics topics() {
         return new NewTopics(
-                new NewTopic(DEFAULT_KAFKA_LISTENER_RETRY, 1, (short) 1)
+                new NewTopic(KAFKA_LISTENER_DEFAULT_RETRY, 1, (short) 1)
         );
-    }
-
-    @Bean
-    public NewTopic nonBlockingRetryTopic() {
-        return new NewTopic(NON_BLOCKING_RETRY_TOPIC, 2, (short) 1);
     }
 
     @Bean
