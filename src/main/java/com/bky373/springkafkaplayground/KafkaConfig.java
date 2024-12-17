@@ -14,8 +14,8 @@ public class KafkaConfig {
     public static final String BROKERS = "localhost:29092";
     public static final String AUTO_OFFSET_RESET = "earliest";
 
-    @Bean
-    public NewTopic topic1() {
-        return new NewTopic(MY_TOPIC, 1, (short) 1);
-    }
+//    @Bean
+//    public NewTopic topic1() {
+//        return new NewTopic(MY_TOPIC, 1, (short) 1);
+//    }
 }

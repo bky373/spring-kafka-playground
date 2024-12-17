@@ -1,6 +1,6 @@
 package com.bky373.springkafkaplayground;
 
-import static com.bky373.springkafkaplayground.retry.KafkaRetryConfig.KAFKA_LISTENER_DEFAULT_RETRY;
+import static com.bky373.springkafkaplayground.retry.KafkaRetryConfig.RETRYABLE_ANNOTATION_DEFAULT;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 @SpringBootApplication
 public class App {
 
-    private static final String TOPIC = KAFKA_LISTENER_DEFAULT_RETRY;
+    private static final String TOPIC = RETRYABLE_ANNOTATION_DEFAULT;
     private static final Logger log = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {

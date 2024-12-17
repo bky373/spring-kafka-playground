@@ -24,15 +24,14 @@ public class KafkaRetryConfig {
     private static final long RETRY_INTERVAL = 3000;
     private static final long RETRY_MAX_ATTEMPTS = 3;
 
-    public static final String BLOCKING_RETRY_TOPIC = "blocking-retry";
-    public static final String NON_BLOCKING_RETRY_TOPIC = "non-blocking-retry";
-    public static final String KAFKA_LISTENER_DEFAULT_RETRY = "kafka-listener-default-retry";
-    public static final String RETRYABLE_ANNOTATION_DEFAULT_TOPIC = "retryable-annotation-default";
+    public static final String KAFKA_LISTENER_DEFAULT = "kafka-listener-default";
+    public static final String RETRYABLE_ANNOTATION_DEFAULT = "retryable-annotation-default";
 
     @Bean
     public NewTopics topics() {
         return new NewTopics(
-                new NewTopic(KAFKA_LISTENER_DEFAULT_RETRY, 1, (short) 1)
+//                new NewTopic(KAFKA_LISTENER_DEFAULT, 1, (short) 1),
+                new NewTopic(RETRYABLE_ANNOTATION_DEFAULT, 2, (short) 1)
         );
     }
 
@@ -40,7 +39,8 @@ public class KafkaRetryConfig {
     KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
-        factory.getContainerProperties().setDeliveryAttemptHeader(true);
+        factory.getContainerProperties()
+               .setDeliveryAttemptHeader(true);
         return factory;
     }
 
