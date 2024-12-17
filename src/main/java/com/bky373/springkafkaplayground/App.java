@@ -1,7 +1,9 @@
 package com.bky373.springkafkaplayground;
 
+import static com.bky373.springkafkaplayground.KafkaCommonConfig.MAX_PARTITION;
 import static com.bky373.springkafkaplayground.retry.KafkaRetryConfig.RETRYABLE_ANNOTATION_DEFAULT;
 
+import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationRunner;
@@ -23,11 +25,14 @@ public class App {
     @Bean
     public ApplicationRunner runner(KafkaTemplate<String, String> kafkaTemplate) {
         return args -> {
+            Random random = new Random();
             Thread.sleep(5000);
             long now = System.currentTimeMillis();
-            kafkaTemplate.send(TOPIC, String.valueOf(now), now + "");
+            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
             now = System.currentTimeMillis();
-            kafkaTemplate.send(TOPIC, String.valueOf(now), now + "");
+            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
+            now = System.currentTimeMillis();
+            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
             log.info("Sending is Successful");
         };
     }

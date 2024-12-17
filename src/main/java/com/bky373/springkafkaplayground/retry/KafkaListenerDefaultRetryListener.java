@@ -19,10 +19,10 @@ public class KafkaListenerDefaultRetryListener extends AbstractConsumerSeekAware
 
     private static final Logger log = LoggerFactory.getLogger(KafkaListenerDefaultRetryListener.class);
 
-    @KafkaListener(
-            id = KAFKA_LISTENER_DEFAULT,
-            topics = KAFKA_LISTENER_DEFAULT
-    )
+//    @KafkaListener(
+//            id = KAFKA_LISTENER_DEFAULT,
+//            topics = KAFKA_LISTENER_DEFAULT
+//    )
     public void listen(ConsumerRecord<String, String> input, @Header(KafkaHeaders.DELIVERY_ATTEMPT) int blockingAttempts) throws SocketException {
         log.info("--- Received. input: {}, attempt: {}", input.value(), blockingAttempts);
 //        long value = Long.parseLong(input.value());

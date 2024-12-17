@@ -1,6 +1,8 @@
 package com.bky373.springkafkaplayground.retry;
 
-import com.bky373.springkafkaplayground.KafkaConfig;
+import static com.bky373.springkafkaplayground.KafkaCommonConfig.MAX_PARTITION;
+
+import com.bky373.springkafkaplayground.KafkaCommonConfig;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -31,7 +33,7 @@ public class KafkaRetryConfig {
     public NewTopics topics() {
         return new NewTopics(
 //                new NewTopic(KAFKA_LISTENER_DEFAULT, 1, (short) 1),
-                new NewTopic(RETRYABLE_ANNOTATION_DEFAULT, 2, (short) 1)
+                new NewTopic(RETRYABLE_ANNOTATION_DEFAULT, MAX_PARTITION, (short) 1)
         );
     }
 
@@ -61,8 +63,8 @@ public class KafkaRetryConfig {
     @Bean
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConfig.BROKERS);
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, KafkaConfig.AUTO_OFFSET_RESET);
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommonConfig.BROKERS);
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, KafkaCommonConfig.AUTO_OFFSET_RESET);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
