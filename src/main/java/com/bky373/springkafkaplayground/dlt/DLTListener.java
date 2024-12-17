@@ -17,10 +17,10 @@ public class DLTListener {
 
     private static final Logger log = LoggerFactory.getLogger(DLTListener.class);
 
-    @RetryableTopic(attempts = "1",
-            autoStartDltHandler = "false",
-            dltStrategy = DltStrategy.FAIL_ON_ERROR)
-    @KafkaListener(topics = DLT_MAIN_TOPIC, groupId = "dlt-main-group")
+//    @RetryableTopic(attempts = "1",
+//            autoStartDltHandler = "false",
+//            dltStrategy = DltStrategy.FAIL_ON_ERROR)
+//    @KafkaListener(topics = DLT_MAIN_TOPIC, groupId = "dlt-main-group")
     public void listen(ConsumerRecord record) throws SocketException {
 //        if (record.offset() % 2 == 0) {
         throw new SocketException("batch");
@@ -29,7 +29,7 @@ public class DLTListener {
 //        }
     }
 
-    @DltHandler
+//    @DltHandler
     public void listenToDlt(ConsumerRecord record) throws SocketException {
         throw new RuntimeException("dlt-retry");
     }

@@ -5,7 +5,7 @@
   <appender name="STDOUT"
     class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%clr(%d{YY-MM-dd HH:mm:ss.SSS} %-5level %15.15t %-40.40logger{39} : %msg) %n</pattern>
+      <pattern>%clr(%d{YY-MM-dd HH:mm:ss.SSS} %-5level %30.30t %-40.40logger{39} : %msg) %n</pattern>
     </encoder>
   </appender>
 
