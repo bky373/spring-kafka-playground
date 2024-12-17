@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.listener.AbstractConsumerSeekAware;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,10 +23,10 @@ public class DefaultKafkaListenerRetryListener extends AbstractConsumerSeekAware
             id = DEFAULT_KAFKA_LISTENER_RETRY,
             topics = DEFAULT_KAFKA_LISTENER_RETRY
     )
-    public void listen(ConsumerRecord<String, String> input) throws SocketException {
-        log.info("------ Received. input: {}", input.value());
+    public void listen(ConsumerRecord<String, String> input, @Header(KafkaHeaders.DELIVERY_ATTEMPT) int blockingAttempts) throws SocketException {
+        log.info("--- Received. input: {}, attempt: {}", input.value(), blockingAttempts);
         long value = Long.parseLong(input.value());
-        if (value % 2 == 0) {
+        if ((value + blockingAttempts) % 2 == 0) {
             throw new SocketException(DEFAULT_KAFKA_LISTENER_RETRY);
         }
         log.info("--------- Successfully processed. input: {}", input.value());
