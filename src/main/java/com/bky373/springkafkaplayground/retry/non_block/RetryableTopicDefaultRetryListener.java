@@ -1,4 +1,4 @@
-package com.bky373.springkafkaplayground.retry.nonblock;
+package com.bky373.springkafkaplayground.retry.non_block;
 
 import static com.bky373.springkafkaplayground.retry.KafkaRetryConfig.RETRYABLE_ANNOTATION_DEFAULT;
 
