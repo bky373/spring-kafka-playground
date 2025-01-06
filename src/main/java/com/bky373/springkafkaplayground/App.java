@@ -26,13 +26,13 @@ public class App {
     public ApplicationRunner runner(KafkaTemplate<String, String> kafkaTemplate) {
         return args -> {
             Random random = new Random();
-            Thread.sleep(5000);
+            Thread.sleep(3000);
             long now = System.currentTimeMillis();
             kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
-            now = System.currentTimeMillis();
-            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
-            now = System.currentTimeMillis();
-            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
+//            now = System.currentTimeMillis();
+//            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
+//            now = System.currentTimeMillis();
+//            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
             log.info("Sending is Successful");
         };
     }

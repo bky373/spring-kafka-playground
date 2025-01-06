@@ -12,12 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaAdmin.NewTopics;
-import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.listener.CommonErrorHandler;
+import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.util.backoff.FixedBackOff;
 
 @Configuration
 public class KafkaRetryConfig {
@@ -37,14 +37,18 @@ public class KafkaRetryConfig {
         );
     }
 
-    @Bean
-    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        factory.getContainerProperties()
-               .setDeliveryAttemptHeader(true);
-        return factory;
-    }
+//    @Bean
+//    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
+//        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+//        factory.setConsumerFactory(consumerFactory());
+//        factory.setCommonErrorHandler(new DefaultErrorHandler(new FixedBackOff(0L, 2L)));
+//        return factory;
+//    }
+
+//    @Bean
+//    public CommonErrorHandler errorHandler() {
+//        return new DefaultErrorHandler(new FixedBackOff(500L, 2L));
+//    }
 
 //    @Bean
 //    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> batchKafkaListenerContainerFactory() {
@@ -55,30 +59,32 @@ public class KafkaRetryConfig {
 //        return factory;
 //    }
 
-    @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerConfigs());
-    }
-
-    @Bean
-    public Map<String, Object> consumerConfigs() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommonConfig.BROKERS);
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, KafkaCommonConfig.AUTO_OFFSET_RESET);
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        return props;
-    }
-
 //    @Bean
-//    public DefaultErrorHandler errorHandler() {
-//        BackOff backOff = new FixedBackOff(RETRY_INTERVAL, RETRY_MAX_ATTEMPTS);
-//        DefaultErrorHandler errorHandler = new DefaultErrorHandler((consumerRecord, e) -> {
-//            log.warn("[Retry] r: {}", consumerRecord, e);
-//        }, backOff);
-//        errorHandler.addRetryableExceptions(SocketException.class);
-//        errorHandler.addNotRetryableExceptions(NullPointerException.class);
-//        return errorHandler;
+//    public ConsumerFactory<String, String> consumerFactory() {
+//        return new DefaultKafkaConsumerFactory<>(consumerConfigs());
+//    }
+//
+//    @Bean
+//    public Map<String, Object> consumerConfigs() {
+//        Map<String, Object> props = new HashMap<>();
+//        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommonConfig.BROKERS);
+//        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, KafkaCommonConfig.AUTO_OFFSET_RESET);
+//        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
+//        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+//        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+//        return props;
+//    }
+
+    //    @Bean
+//    public KafkaListenerErrorHandler myErrorHandler() {
+//        return (msg, ex) -> {
+//            byte[] o = msg.getHeaders()
+//                          .get(RetryTopicHeaders.DEFAULT_HEADER_ATTEMPTS, byte[].class);
+//            if (o != null && new BigInteger(o).intValue() > 1) {
+//                log.error("errrrrrrrr");
+//                return "FAILED";
+//            }
+//            throw ex;
+//        };
 //    }
 }
