@@ -12,12 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaAdmin.NewTopics;
-import org.springframework.kafka.listener.CommonErrorHandler;
-import org.springframework.kafka.listener.DefaultErrorHandler;
-import org.springframework.util.backoff.FixedBackOff;
+import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 
 @Configuration
 public class KafkaRetryConfig {
@@ -41,13 +41,9 @@ public class KafkaRetryConfig {
 //    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
 //        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
 //        factory.setConsumerFactory(consumerFactory());
-//        factory.setCommonErrorHandler(new DefaultErrorHandler(new FixedBackOff(0L, 2L)));
+//        factory.getContainerProperties()
+//               .setDeliveryAttemptHeader(true);
 //        return factory;
-//    }
-
-//    @Bean
-//    public CommonErrorHandler errorHandler() {
-//        return new DefaultErrorHandler(new FixedBackOff(500L, 2L));
 //    }
 
 //    @Bean
@@ -63,7 +59,7 @@ public class KafkaRetryConfig {
 //    public ConsumerFactory<String, String> consumerFactory() {
 //        return new DefaultKafkaConsumerFactory<>(consumerConfigs());
 //    }
-//
+
 //    @Bean
 //    public Map<String, Object> consumerConfigs() {
 //        Map<String, Object> props = new HashMap<>();
@@ -75,16 +71,14 @@ public class KafkaRetryConfig {
 //        return props;
 //    }
 
-    //    @Bean
-//    public KafkaListenerErrorHandler myErrorHandler() {
-//        return (msg, ex) -> {
-//            byte[] o = msg.getHeaders()
-//                          .get(RetryTopicHeaders.DEFAULT_HEADER_ATTEMPTS, byte[].class);
-//            if (o != null && new BigInteger(o).intValue() > 1) {
-//                log.error("errrrrrrrr");
-//                return "FAILED";
-//            }
-//            throw ex;
-//        };
+//    @Bean
+//    public DefaultErrorHandler errorHandler() {
+//        BackOff backOff = new FixedBackOff(RETRY_INTERVAL, RETRY_MAX_ATTEMPTS);
+//        DefaultErrorHandler errorHandler = new DefaultErrorHandler((consumerRecord, e) -> {
+//            log.warn("[Retry] r: {}", consumerRecord, e);
+//        }, backOff);
+//        errorHandler.addRetryableExceptions(SocketException.class);
+//        errorHandler.addNotRetryableExceptions(NullPointerException.class);
+//        return errorHandler;
 //    }
 }
