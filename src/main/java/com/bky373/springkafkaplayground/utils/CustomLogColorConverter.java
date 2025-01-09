@@ -1,4 +1,4 @@
-package com.bky373.springkafkaplayground;
+package com.bky373.springkafkaplayground.utils;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.pattern.color.ANSIConstants;

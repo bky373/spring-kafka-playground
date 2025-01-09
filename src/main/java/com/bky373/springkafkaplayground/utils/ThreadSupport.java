@@ -1,4 +1,4 @@
-package com.bky373.springkafkaplayground;
+package com.bky373.springkafkaplayground.utils;
 
 public class ThreadSupport {
 

@@ -1,4 +1,4 @@
-package com.bky373.springkafkaplayground;
+package com.bky373.springkafkaplayground.utils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

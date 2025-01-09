@@ -1,6 +1,5 @@
-package com.bky373.springkafkaplayground;
+package com.bky373.springkafkaplayground.utils;
 
-import java.util.Arrays;
 import org.springframework.kafka.event.KafkaEvent;
 import org.springframework.stereotype.Component;
 
