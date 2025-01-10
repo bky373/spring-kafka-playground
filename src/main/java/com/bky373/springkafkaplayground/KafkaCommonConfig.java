@@ -1,5 +1,7 @@
 package com.bky373.springkafkaplayground;
 
+import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 
@@ -13,8 +15,8 @@ public class KafkaCommonConfig {
     public static final String AUTO_OFFSET_RESET = "earliest";
     public static final int MAX_PARTITION = 1;
 
-//    @Bean
-//    public NewTopic topic1() {
-//        return new NewTopic(MY_TOPIC, 1, (short) 1);
-//    }
+    @Bean
+    public NewTopic myTopic() {
+        return new NewTopic(MY_TOPIC, MAX_PARTITION, (short) 1);
+    }
 }

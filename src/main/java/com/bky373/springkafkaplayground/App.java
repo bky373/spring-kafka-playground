@@ -1,6 +1,7 @@
 package com.bky373.springkafkaplayground;
 
 import static com.bky373.springkafkaplayground.KafkaCommonConfig.MAX_PARTITION;
+import static com.bky373.springkafkaplayground.KafkaCommonConfig.MY_TOPIC;
 import static com.bky373.springkafkaplayground.retry.KafkaRetryConfig.RETRYABLE_ANNOTATION_DEFAULT;
 
 import java.util.Random;
@@ -15,7 +16,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 @SpringBootApplication
 public class App {
 
-    private static final String TOPIC = RETRYABLE_ANNOTATION_DEFAULT;
+    private static final String TOPIC = MY_TOPIC;
     private static final Logger log = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
@@ -26,9 +27,21 @@ public class App {
     public ApplicationRunner runner(KafkaTemplate<String, String> kafkaTemplate) {
         return args -> {
             Random random = new Random();
-            Thread.sleep(3000);
+//            Thread.sleep(3000);
             long now = System.currentTimeMillis();
             kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
+//            now = System.currentTimeMillis();
+//            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
+//            now = System.currentTimeMillis();
+//            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
+//            now = System.currentTimeMillis();
+//            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
+//            now = System.currentTimeMillis();
+//            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
+//            now = System.currentTimeMillis();
+//            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
+//            now = System.currentTimeMillis();
+//            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
 //            now = System.currentTimeMillis();
 //            kafkaTemplate.send(TOPIC, random.nextInt(MAX_PARTITION), String.valueOf(now), now + "");
 //            now = System.currentTimeMillis();

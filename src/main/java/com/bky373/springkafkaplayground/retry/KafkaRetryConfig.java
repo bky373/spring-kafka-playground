@@ -19,7 +19,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaAdmin.NewTopics;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 
-@Configuration
+//@Configuration
 public class KafkaRetryConfig {
 
     private static final Logger log = LoggerFactory.getLogger(KafkaRetryConfig.class);
