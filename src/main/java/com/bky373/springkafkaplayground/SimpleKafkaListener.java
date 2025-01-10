@@ -21,8 +21,6 @@ public class SimpleKafkaListener {
         try {
             System.out.println("Received messages.: " + input.getFirst()
                                                             .value());
-//        return null;
-//        throw new RuntimeException("failed");
             return input.stream()
                         .map(i -> MessageBuilder.withPayload(i.value())
                                                 .setHeader(KafkaHeaders.PARTITION, i.partition())
